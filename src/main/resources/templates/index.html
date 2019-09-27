@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1>one</h1>
+</div>
+<div>
+    <form action="#" th:action="@{/cbsearch}"  method="post">
+        <select name="postype" th:label="职位类型">
+            <option></option>
+            <option th:value="a">a</option>
+            <option th:value="a1">a1</option>
+            <option th:value="a2">a2</option>
+        </select>
+        <select name="postreatment" th:label="职位待遇">
+            <option></option>
+            <option th:value="b">b</option>
+            <option th:value="b1">b1</option>
+            <option th:value="b2">b2</option>
+        </select>
+        <select name="poslevel" th:label="学历水平">
+            <option></option>
+            <option th:value="c">c</option>
+            <option th:value="c1">c1</option>
+            <option th:value="c2">c2</option>
+        </select>
+        <select name="posexperience" th:label="工作经验">
+            <option></option>
+            <option th:value="d">d</option>
+            <option th:value="d1">d1</option>
+            <option th:value="d2">d2</option>
+        </select>
+        <select name="poswelfare" th:label="职位福利">
+            <option></option>
+            <option th:value="e">e</option>
+            <option th:value="e1">e1</option>
+            <option th:value="e2">e2</option>
+        </select>
+        <input type="submit">
+    </form>
+</div>
+<div>
+    <a href="#" th:href="@{/jumpMapSearch}">这里跳转到地图查询</a>
+</div>
+</body>
+</html>

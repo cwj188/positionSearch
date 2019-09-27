@@ -1,0 +1,198 @@
+<!-- 重点参数：makeSelectedEvents -->
+<!-- 重点代码：markerList.on('listElementClick'..... -->
+<!doctype html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- 原始地址：//webapi.amap.com/ui/1.0/ui/misc/MarkerList/examples/manually-select.html -->
+    <base href="//webapi.amap.com/ui/1.0/ui/misc/MarkerList/examples/"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>手动控制选中</title>
+    <link rel="stylesheet" type="text/css" href="./common.css">
+    <style>
+        #my-list li {
+            cursor: default;
+        }
+    </style>
+</head>
+
+<body>
+<span style="display: none">
+    <form id="sendMapId" th:action="@{http://localhost:8080/mcid}" th:method="post">
+        <input id="savemcid" name="getMapId" type="hidden" value="">
+    </form>
+    <input id="resultList" type="hidden" th:value="${msResult}">
+</span>
+<span th:each="ms:${msResult}" style="display: none;">
+    <input class="count" type="hidden" th:value="${#lists.size(msResult)}">
+    <!--<input class="mcid" type="hidden" th:value="${ms.getMcid()}">-->
+    <!--<input class="mcarea" type="hidden" th:value="${ms.getArea()}">-->
+    <!--<input class="mcdep" type="hidden" th:value="${ms.getDepartment()}">-->
+    <!--<input class="mcpname" type="hidden" th:value="${ms.getPositionname()}">-->
+    <br>
+</span>
+<div id="outer-box">
+    <div id="container">
+    </div>
+    <div id="panel">
+        <div id="intro">
+            <h3>手动控制选中</h3>
+        </div>
+        <ul id="my-list"></ul>
+    </div>
+</div>
+<script src="webjars/jquery/3.4.1/jquery.js"></script>
+<script type="text/javascript" src='//webapi.amap.com/maps?v=1.4.15&key=1c404b9e0aa685a49c6d6e625fdb20a9'></script>
+<!-- UI组件库 1.0 -->
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<script type="text/javascript">
+    //将一级地图的定位信息通过session传到该页面
+    var lng = sessionStorage.getItem("lng");
+    var lat = sessionStorage.getItem("lat");
+    //创建地图
+    var map = new AMap.Map('container', {
+        zoom: 9
+    });
+
+    AMapUI.loadUI(['misc/MarkerList'], function (MarkerList) {
+
+        var markerList = new MarkerList({
+            //关联的map对象
+            map: map,
+
+            //列表的dom容器的id
+            listContainer: 'my-list',
+
+            //选中状态（通过点击列表或者marker）时在Marker和列表节点上添加的class，可以借此编写css控制选中时的展示效果
+            selectedClassNames: 'selected',
+
+            //首先置空默认的触发选中的事件
+            makeSelectedEvents: null,
+
+            //确定监听了列表节点的click事件
+            listElementEvents: ['click'],
+
+            autoSetFitView: true,
+
+            //返回数据项的Id
+            getDataId: function (dataItem, index) {
+                //index表示该数据项在数组中的索引位置，从0开始，如果确实没有id，可以返回index代替
+                return dataItem.id;
+            },
+            //返回数据项的位置信息，需要是AMap.LngLat实例，或者是经纬度数组，比如[116.789806, 39.904989]
+            getPosition: function () {
+                return [lng, lat];
+            },
+            //返回数据项对应的Marker
+            getMarker: function (dataItem, context, recycledMarker) {
+
+                //marker的标注内容
+                var content = '单位' + (context.index + 1) + '';
+
+                var label = {
+                    offset: new AMap.Pixel(16, 18), //修改label相对于marker的位置
+                    content: content
+                };
+
+                //存在可回收利用的marker
+                if (recycledMarker) {
+                    //直接更新内容返回
+                    recycledMarker.setLabel(label);
+                    return recycledMarker;
+                }
+
+                //返回一个新的Marker
+                return new AMap.Marker({
+                    label: label
+                });
+            },
+            //返回数据项对应的列表节点
+            getListElement: function (dataItem, context, recycledListElement) {
+                // var tpl = '<p>' + $(".mcpname").val() + '</p><br/>' +
+                //     '<p>' + $(".mcdep").val() + '</p>' +
+                //     '<p>' + $(".mcarea").val() + '</p>' +
+                //     '<p><button class="my-btn">查看职位详情</button></p>';
+                var tpl = '<p style="font-size: xx-large;font-family: 小单纯体">' + dataItem.positionname + '</p><br/>' +
+                    '<p style="font-size: medium;font-family: 小单纯体">' + dataItem.department + '</p>' +
+                    '<p style="font-size: medium;font-family: 小单纯体">' + dataItem.area + '</p>' +
+                    '<p><button class="my-btn">查看职位详情</button></p>';
+
+                var content = MarkerList.utils.template(tpl, {
+                    dataItem: dataItem,
+                    dataIndex: context.index
+                });
+
+                if (recycledListElement) {
+                    //存在可回收利用的listElement, 直接更新内容返回
+                    recycledListElement.innerHTML = content;
+                    return recycledListElement;
+                }
+
+                //返回一段html，MarkerList将利用此html构建一个新的dom节点
+                return '<li>' + content + '</li>';
+            }
+
+        });
+
+        markerList.on('listElementClick', function (event,record) {
+
+            var $ = markerList.utils.$;
+
+            //触发点击的是 .my-btn
+            if ($(event.target).hasClass('my-btn')) {
+
+                //选中当前记录
+                this.selectByDataId(record.id);
+                $("#savemcid").val(record.data.mcid);
+                $("#sendMapId").submit();
+
+            } else {
+                $("#savemcid").val(record.data.mcid);
+                //仅仅打开一个infoWindow
+                this.openInfoWindowOnRecord(record);
+            }
+        });
+
+        //监听选中改变
+        markerList.on('selectedChanged', function (event, info) {
+            //console.log(event, info);
+            //选中并非由列表节点上的事件触发，将关联的列表节点移动到视野内
+            if (!info.sourceEventInfo.isListElementEvent) {
+
+                if (info.selected.listElement) {
+                    scrollListElementIntoView($(info.selected.listElement));
+                }
+            }
+        });
+
+        function scrollListElementIntoView($listEle) {
+
+            if (!isElementInViewport($listEle.get(0))) {
+                $('#panel').scrollTop($listEle.offset().top - $listEle.parent().offset().top);
+            }
+
+            //闪动一下
+            $listEle
+                .one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
+                    function(e) {
+                        $(this).removeClass('flash animated');
+                    }).addClass('flash animated');
+        }
+
+        //构建一个数据项数组，数据项本身没有格式要求，但需要支持下述的getDataId和getPosition
+        // var dataId = sessionStorage.getItem('poiId');
+        // var poiLocation = sessionStorage.getItem('poiLocation');
+        // var description = $(".mcarea").val();
+        var jsonstr=$("#resultList").val();
+        var json=eval(jsonstr); //将json字符串转成json对象
+        console.log(json);
+        var data = json;
+
+        //展示该数据
+        markerList.render(data);
+    });
+</script>
+</body>
+
+</html>

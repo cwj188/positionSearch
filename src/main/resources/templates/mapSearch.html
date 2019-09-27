@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 原始地址：//webapi.amap.com/ui/1.0/ui/misc/PoiPicker/examples/index.html -->
+    <!--<base href="//webapi.amap.com/ui/1.0/ui/misc/PoiPicker/examples/" />-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>职位地图查询</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            font-size: 13px;
+        }
+
+        #pickerBox {
+            position: absolute;
+            z-index: 9999;
+            top: 50px;
+            right: 30px;
+            width: 300px;
+        }
+
+        #pickerInput {
+            width: 200px;
+            padding: 5px 5px;
+        }
+
+        #poiInfo {
+            background: #fff;
+        }
+
+        .amap_lib_placeSearch .poibox.highlight {
+            background-color: #CAE1FF;
+        }
+
+        .amap_lib_placeSearch .poi-more {
+            display: none!important;
+        }
+    </style>
+</head>
+<body>
+<div id="outer-box">
+    <div id="panel" class="scrollbar1">
+        <ul id="myList">
+        </ul>
+    </div>
+</div>
+<div id="container" class="map" tabindex="0"></div>
+<div id="pickerBox">
+    <input id="pickerInput" placeholder="输入关键字选取地点" />
+    <div id="poiInfo"></div>
+</div>
+<script src="webjars/jquery/3.4.1/jquery.js"></script>
+<script src="https://webapi.amap.com/maps?v=1.4.15&key=1c404b9e0aa685a49c6d6e625fdb20a9&plugin=Map3D"></script>
+<script src="https://webapi.amap.com/loca?v=1.3.0&key=1c404b9e0aa685a49c6d6e625fdb20a9"></script>
+<script src="https://a.amap.com/Loca/static/mock/wjarea.js"></script>
+<!-- UI组件库 1.0 -->
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<script type="text/javascript" th:inline="none">
+    var colors = ["#c6dbef", "#9ecae1", "#6baed6", "#3182bd", "#08519c"];
+
+    //创建3d高楼
+    var buildings=new AMap.Buildings({
+        zooms:[15,20],
+        zIndex:130,
+        heightFactor:2
+    });
+
+    //创建卫星图层
+    // var satellite=new AMap.TileLayer.Satellite();
+    var normal=new AMap.TileLayer({zoom:10});
+    //创建3d图层
+    var object3Dlayer = new AMap.Object3DLayer();
+    //创建地图底图
+    var map = new AMap.Map('container', {
+        mapStyle: 'amap://styles/fresh',
+        features: ['bg', 'road'],
+        zoom: 10,
+        pitch: 20,
+        rotation:-35,
+        viewMode: '3D',
+        layers: [normal,buildings,object3Dlayer]
+    });
+    //设置环境光以及部分3d效果
+    map.AmbientLight = new AMap.Lights.AmbientLight([1, 1, 1], 0.9);
+    map.DirectionLight = new AMap.Lights.DirectionLight([0, -1, 1], [1, 1, 1], 0.1);
+    // var bounds = [
+    //     new AMap.LngLat(116,39),
+    //     new AMap.LngLat(117,39),
+    //     new AMap.LngLat(117,40),
+    //     new AMap.LngLat(116,40)
+    // ];
+    // var height = 50000;
+    // var color = '#0088ff';
+    // var prism = new AMap.Object3D.Prism({
+    //     path:bounds,
+    //     height:height,
+    //     color:color
+    // });
+    // object3Dlayer.add(prism);
+
+    //定位自身位置插件
+    AMap.plugin('AMap.Geolocation',function () {
+        var location=new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+            maximumAge: 0,           //定位结果缓存0毫秒，默认：0
+            convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+            showButton: true,        //显示定位按钮，默认：true
+            buttonPosition: 'LB',    //定位按钮停靠位置，默认：'LB'，左下角
+            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
+            showCircle: true,        //定位成功后用圆圈表示定位精度范围，默认：true
+            panToLocation: true,     //定位成功后将定位到的位置作为地图中心点，默认：true
+            zoomToAccuracy:false     //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+        });
+        map.addControl(location);
+    });
+
+    //设置区域块
+    new AMap.Polygon({
+        zIndex:200,
+        bubble:true,
+        fillOpacity:0.3,
+        strokeWeight:1,
+        path:[[115.82528,28.658175],[115.824122,28.656254],[115.825066,28.650455],[115.822791,28.648986],[115.822491,28.64876],[115.821289,28.646124],[115.824379,28.641265],[115.830602,28.644994],[115.835323,28.653656],[115.825323,28.658212],[115.82528,28.658175]],
+        map:map
+    })
+
+    //设置poi实现搜索选点
+    AMapUI.loadUI(['misc/PoiPicker'], function(PoiPicker) {
+        var poiPicker = new PoiPicker({
+            //输入框id
+            input: 'pickerInput'
+        });
+        //初始化poiPicker
+        poiPickerReady(poiPicker);
+    });
+    function poiPickerReady(poiPicker) {
+        window.poiPicker = poiPicker;
+        var marker = new AMap.Marker();
+        var infoWindow = new AMap.InfoWindow({
+            offset: new AMap.Pixel(0, -20)
+        });
+        //选取了某个POI
+        poiPicker.on('poiPicked', function(poiResult) {
+            var source = poiResult.source;
+                poi = poiResult.item;
+                info = {
+                    source: source,
+                    id: poi.id,
+                    name: poi.name,
+                    location: poi.location.toString(),
+                    address: poi.address,
+                    tel:poi.tel,
+                    type:poi.type,
+                    website:poi.website,
+                    cityname:poi.cityname,
+                    adname:poi.adname
+                };
+            marker.setMap(map);
+            infoWindow.setMap(map);
+
+            marker.setPosition(poi.location);
+            infoWindow.setPosition(poi.location);
+
+            var city=poi.cityname+poi.adname;
+            console.log(poi);
+            console.log(city);
+            if (isNaN(city)){
+                city=poi.district;
+            }
+            var type=poi.type;
+            if (type==undefined){
+                type="无";
+            }
+            var phone=poi.tel;
+            if (phone==undefined){
+                phone="无";
+            }
+            var content='<a style="text-decoration: none" href="/mapInfo?area='+poi.name+'"><h3>'+poi.name+'</h3><hr><body><span>城市：'+city+'</span><br><span>类型：'+type+'</span><br><span>电话：'+phone+'</span><br><span>地址：'+poi.address+'</span><br></body></a>';
+            infoWindow.setContent(content);
+            infoWindow.open(map, marker.getPosition());
+            map.setCenter(marker.getPosition());
+
+            sessionStorage.setItem('poiId',poi.id);
+            sessionStorage.setItem('lat',poi.location.lat);
+            sessionStorage.setItem('lng',poi.location.lng);
+        });
+        poiPicker.onCityReady(function() {
+            poiPicker.suggest('美食');
+        });
+    }
+
+    //显示室内结构插件，目前没什么效果
+    // AMap.plugin('AMap.IndoorMap',function () {
+    //     var indoorMap=new AMap.IndoorMap({alwaysShow:true});
+    //     indoorMap.showIndoorMap('B031704SPE');
+    // });
+    // map.indoorMap.on('click',function (result) {
+    //     console.log(result.shop.id);
+    // });
+
+    // $("#upLLitude").onclick(function () {
+    //     longitude=$("longitude").val();
+    //     latitude=$("latitude").val();
+    // });
+
+    //将图层设置插入底图之中
+    var layer = new Loca.PolygonLayer({
+        map: map,
+        fitView: true
+    });
+    layer.setData(area, {
+        lnglat: 'lnglat'
+    });
+    layer.setOptions({
+        style: {
+            opacity: 0.5,
+            color: function (res) {
+                var index = res.index;
+                return colors[index % colors.length];
+            },
+            height: function () {
+                return Math.random() * 500 + 100;
+            },
+            altitude:100
+        }
+    });
+    layer.render();
+</script>
+</body>
+</html>

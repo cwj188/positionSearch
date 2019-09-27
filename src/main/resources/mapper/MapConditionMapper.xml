@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="positionsearchmodule.searchmodule.dao.MapConditionMapper" >
+  <insert id="insert" parameterType="positionsearchmodule.searchmodule.model.MapCondition" >
+    <selectKey resultType="java.lang.Integer" keyProperty="mcid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mapcondition (area, department, positionname
+      )
+    values (#{area,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{positionname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="positionsearchmodule.searchmodule.model.MapCondition" >
+    <selectKey resultType="java.lang.Integer" keyProperty="mcid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mapcondition
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="positionname != null" >
+        positionname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="positionname != null" >
+        #{positionname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="queryByArea" parameterType="String" resultType="positionsearchmodule.searchmodule.model.MapCondition">
+    select * from position.mapcondition where area = #{area};
+--     select * from position.mapcondition where area = 'area3';
+  </select>
+  <select id="queryByMcid" parameterType="int" resultType="positionsearchmodule.searchmodule.model.Position">
+    select * from position.position where mcid= ${mcid};
+  </select>
+</mapper>

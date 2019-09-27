@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="positionsearchmodule.searchmodule.dao.ApplicantMapper" >
+  <insert id="insert" parameterType="positionsearchmodule.searchmodule.model.Applicant" >
+    insert into applicant (aid, aname, aage, 
+      agender, amarriage)
+    values (#{aid,jdbcType=INTEGER}, #{aname,jdbcType=VARCHAR}, #{aage,jdbcType=VARCHAR}, 
+      #{agender,jdbcType=VARCHAR}, #{amarriage,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="positionsearchmodule.searchmodule.model.Applicant" >
+    insert into applicant
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="aid != null" >
+        aid,
+      </if>
+      <if test="aname != null" >
+        aname,
+      </if>
+      <if test="aage != null" >
+        aage,
+      </if>
+      <if test="agender != null" >
+        agender,
+      </if>
+      <if test="amarriage != null" >
+        amarriage,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="aid != null" >
+        #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="aname != null" >
+        #{aname,jdbcType=VARCHAR},
+      </if>
+      <if test="aage != null" >
+        #{aage,jdbcType=VARCHAR},
+      </if>
+      <if test="agender != null" >
+        #{agender,jdbcType=VARCHAR},
+      </if>
+      <if test="amarriage != null" >
+        #{amarriage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
