@@ -157,28 +157,7 @@
         //监听选中改变
         markerList.on('selectedChanged', function (event, info) {
             //console.log(event, info);
-            //选中并非由列表节点上的事件触发，将关联的列表节点移动到视野内
-            if (!info.sourceEventInfo.isListElementEvent) {
-
-                if (info.selected.listElement) {
-                    scrollListElementIntoView($(info.selected.listElement));
-                }
-            }
         });
-
-        function scrollListElementIntoView($listEle) {
-
-            if (!isElementInViewport($listEle.get(0))) {
-                $('#panel').scrollTop($listEle.offset().top - $listEle.parent().offset().top);
-            }
-
-            //闪动一下
-            $listEle
-                .one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
-                    function(e) {
-                        $(this).removeClass('flash animated');
-                    }).addClass('flash animated');
-        }
 
         //构建一个数据项数组，数据项本身没有格式要求，但需要支持下述的getDataId和getPosition
         // var dataId = sessionStorage.getItem('poiId');

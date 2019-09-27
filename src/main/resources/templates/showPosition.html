@@ -7,10 +7,22 @@
 <body>
 展示职位详细信息页面
 <div>
-    <p th:text="${mcidResult.getPname()}"></p>
     <div th:if="${mcidResult} ne null">
+        <p th:text="${mcidResult.getPname()}"></p>
         <p th:text="${mcidResult.toString()}"></p>
     </div>
 </div>
+<div>
+    <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+        <input name="upfile" type="file"><br>
+        <input type="submit" value="简历上传">
+    </form>
+    <input type="hidden" th:value="${#httpServletRequest.getParameter('filename')}">
+    <a style="text-decoration: none" th:href="@{/download(filename=${#httpServletRequest.getParameter('filename')})}">点我下载上传的简历</a>
+</div>
+<script src="webjars/jquery/3.4.1/jquery.js"></script>
+<script type="text/javascript">
+
+</script>
 </body>
 </html>
