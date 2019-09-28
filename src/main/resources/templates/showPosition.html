@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style type="text/css">
+    body{
+        display: inline;
+    }
+</style>
 <body>
 展示职位详细信息页面
 <div>
@@ -13,16 +18,35 @@
     </div>
 </div>
 <div>
-    <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
-        <input name="upfile" type="file"><br>
-        <input type="submit" value="简历上传">
-    </form>
+    <div th:if="${dsResult} ne null">
+        <p th:text="${dsResult.getPname()}"></p>
+        <p th:text="${dsResult.toString()}"></p>
+    </div>
+</div>
+<div class="upFileDiv">
+    <label for="up" style="display:block;border: 2px solid red;width: 150px;height: 150px;">
+        <span style="display:block;margin-top:50px;margin-left:10px;top: 50px;font-size: 15px;color: rgba(0,0,0,0.5);">点击此处上传简历</span>
+        <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+            <input id="up" name="upfile" type="file" style="left:-48px;position:absolute;clip: rect(5px,200px,20px,72px)"><br>
+            <span id="showFile"></span>
+            <input type="submit" value="确认上传" style="margin-left:5px;margin-top: 28px;width: 140px;">
+        </form>
+    </label>
+</div>
+<div>
     <input type="hidden" th:value="${#httpServletRequest.getParameter('filename')}">
     <a style="text-decoration: none" th:href="@{/download(filename=${#httpServletRequest.getParameter('filename')})}">点我下载上传的简历</a>
 </div>
 <script src="webjars/jquery/3.4.1/jquery.js"></script>
 <script type="text/javascript">
-
+    $(".upFileDiv label").on("change","input[type='file']",function(){
+        var filePath=$("#up").val();
+        if(filePath.indexOf("doc")!=-1 || filePath.indexOf("docx")!=-1){
+            var arr=filePath.split('\\');
+            var fileName=arr[arr.length-1];
+            $("#showFile").html(fileName);
+        }
+    })
 </script>
 </body>
 </html>

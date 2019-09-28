@@ -46,5 +46,14 @@
 <div>
     <a href="#" th:href="@{/jumpMapSearch}">这里跳转到地图查询</a>
 </div>
+<div>
+    <form th:action="@{/directSearch}" method="post">
+        <input name="direct" type="text">
+        <input type="submit" value="查询">
+    </form>
+</div>
+<div>
+    <a th:href="@{/socket}">点这进入在线聊天页</a>
+</div>
 </body>
 </html>

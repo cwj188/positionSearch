@@ -53,12 +53,10 @@ public class Position {
 
     @Override
     public String toString() {
-        return "Position{" +
-                "pid=" + pid +
+        return "pid=" + pid +
                 ", pname='" + pname + '\'' +
                 ", pinfo='" + pinfo + '\'' +
                 ", posid=" + posid +
-                ", mcid=" + mcid +
-                '}';
+                ", mcid=" + mcid ;
     }
 }

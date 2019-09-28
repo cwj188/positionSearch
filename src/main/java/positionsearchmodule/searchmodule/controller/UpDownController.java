@@ -1,7 +1,6 @@
 package positionsearchmodule.searchmodule.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
 @Controller
+@Slf4j
 public class UpDownController {
-    private static final Logger logger= LoggerFactory.getLogger(UpDownController.class);
-
     @PostMapping("/upload")
     @ResponseBody
     public String upLoadFile(@RequestParam("upfile")MultipartFile upfile, HttpServletRequest request){
@@ -25,17 +23,17 @@ public class UpDownController {
         }
         String fileName=upfile.getOriginalFilename();
         String filePath=request.getSession().getServletContext().getRealPath("/files/");
-        logger.info("上传的文件："+filePath+fileName);
+        log.info("上传的文件："+filePath+fileName);
         File dest=new File(filePath+fileName);
         if (!dest.getParentFile().exists()){
             dest.getParentFile().mkdirs();
         }
         try {
             upfile.transferTo(dest);
-            logger.info("上传成功");
+            log.info("上传成功");
             return "<p>上传成功<p><a href=\"http://localhost:8080/backPosition?filename='"+fileName+"'\">点击返回职位详情页</a>";
         } catch (IOException e) {
-            logger.error(e.toString(),e);
+            log.error(e.toString(),e);
             e.printStackTrace();
         }
         return "<p>上传失败<p><a href=\"http://localhost:8080/backPosition\">点击返回职位详情页</a>";
@@ -70,7 +68,7 @@ public class UpDownController {
                         i = bis.read(buffer);
                     }
                     System.out.println("下载成功");
-                    logger.info("下载地址："+realPath);
+                    log.info("下载地址："+realPath);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {

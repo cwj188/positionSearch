@@ -2,6 +2,7 @@ package positionsearchmodule.searchmodule.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import positionsearchmodule.searchmodule.model.Applicant;
@@ -13,6 +14,11 @@ import java.util.Map;
 public class AdviceController {
     @Autowired
     private AdviceService adviceService;
+
+    @GetMapping("/socket")
+    public String jumpSocket(){
+        return "adviceOnline";
+    }
 
     @PostMapping("/advice")
     public String declareOption(@RequestParam("applicantInfo") Applicant applicant, @RequestParam("adviceMsg") String adviceMsg, Map<String,Object> map){

@@ -14,10 +14,10 @@ public class DirectController {
     @Autowired
     private DSService dsService;
 
-    @RequestMapping("/pName")
-    public String getPositionDirectly(@RequestParam("positionName") String pName, Map<String,Object> map){
+    @RequestMapping("/directSearch")
+    public String getPositionDirectly(@RequestParam("direct") String pName, Map<String,Object> map){
         Position position= dsService.getPositionInfo(pName);
         map.put("dsResult",position);
-        return "directSearch";
+        return "showPosition";
     }
 }

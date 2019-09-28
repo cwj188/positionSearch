@@ -44,4 +44,7 @@
       </if>
     </trim>
   </insert>
+  <select id="queryDirectly" parameterType="String" resultType="positionsearchmodule.searchmodule.model.Position">
+    select * from position.position where pname = #{pName};
+  </select>
 </mapper>
