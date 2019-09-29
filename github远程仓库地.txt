@@ -1,1 +1,6 @@
 https://github.com/cwj188/positionSearch.git
+git更新提交上传github命令
+$git status
+$git add .
+$git commit -m "说明"
+$git push https://github.com/cwj188/positionSearch.git master

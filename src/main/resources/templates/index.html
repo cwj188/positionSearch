@@ -2,58 +2,133 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
     <title>Title</title>
+    <style type="text/css">
+        html body{
+            padding: 0;
+            margin: 0;
+        }
+        .container{
+            border: 1px solid red;
+        }
+        .topcolumn{
+            border: 1px solid red;
+            position: fixed;
+            width: 100%;
+        }
+        .topcolumn-lefticon{
+            border: 1px solid red;
+            display: inline-block;
+            margin-left: 15%;
+            margin-top: 1.5%;
+        }
+        .topcolumn-rightoption{
+            border: 1px solid red;
+            float: right;
+            margin-right: 20%;
+            padding-top: 0;
+        }
+        .topcolumn-rightoption ul{
+            padding-top: 0;
+            padding-bottom: 0;
+            border: 1px solid red;
+            display: inline-block;
+        }
+        .topcolumn-rightoption ul li{
+            border: 1px solid red;
+            /*float: left;*/
+            display: inline-block;
+        }
+        .content{
+            border: 1px solid red;
+            margin-top: 4.8%;
+        }
+        .content-searchcolumn{
+            border: 1px solid red;
+            display: inline-block;
+            margin-left: 43%;
+        }
+        .content-searchcolumn-type{
+            border: 1px solid red;
+            float: left;
+        }
+    </style>
 </head>
 <body>
-<div>
-    <h1>one</h1>
-</div>
-<div>
-    <form action="#" th:action="@{/cbsearch}"  method="post">
-        <select name="postype" th:label="职位类型">
-            <option></option>
-            <option th:value="a">a</option>
-            <option th:value="a1">a1</option>
-            <option th:value="a2">a2</option>
-        </select>
-        <select name="postreatment" th:label="职位待遇">
-            <option></option>
-            <option th:value="b">b</option>
-            <option th:value="b1">b1</option>
-            <option th:value="b2">b2</option>
-        </select>
-        <select name="poslevel" th:label="学历水平">
-            <option></option>
-            <option th:value="c">c</option>
-            <option th:value="c1">c1</option>
-            <option th:value="c2">c2</option>
-        </select>
-        <select name="posexperience" th:label="工作经验">
-            <option></option>
-            <option th:value="d">d</option>
-            <option th:value="d1">d1</option>
-            <option th:value="d2">d2</option>
-        </select>
-        <select name="poswelfare" th:label="职位福利">
-            <option></option>
-            <option th:value="e">e</option>
-            <option th:value="e1">e1</option>
-            <option th:value="e2">e2</option>
-        </select>
-        <input type="submit">
-    </form>
-</div>
-<div>
-    <a href="#" th:href="@{/jumpMapSearch}">这里跳转到地图查询</a>
-</div>
-<div>
-    <form th:action="@{/directSearch}" method="post">
-        <input name="direct" type="text">
-        <input type="submit" value="查询">
-    </form>
-</div>
-<div>
-    <a th:href="@{/socket}">点这进入在线聊天页</a>
+<div class="container">
+    <div class="topcolumn">
+        <div class="topcolumn-lefticon">
+            <img src="templates/img/logo.png">
+        </div>
+        <div class="topcolumn-rightoption">
+            <ul>
+                <li>设置</li>
+                <li>登录</li>
+                <li>注册</li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <form class="content-searchcolumn" action="#" th:action="@{/cbsearch}"  method="post">
+            <div class="content-searchcolumn-type">
+                <select name="postype" th:label="职位类型">
+                    <option></option>
+                    <option th:value="a">a</option>
+                    <option th:value="a1">a1</option>
+                    <option th:value="a2">a2</option>
+                </select>
+            </div>
+            <div class="content-searchcolumn-type">
+                <select name="postreatment" th:label="职位待遇">
+                    <option></option>
+                    <option th:value="b">b</option>
+                    <option th:value="b1">b1</option>
+                    <option th:value="b2">b2</option>
+                </select>
+            </div>
+            <div class="content-searchcolumn-type">
+                <select name="poslevel" th:label="学历水平">
+                    <option></option>
+                    <option th:value="c">c</option>
+                    <option th:value="c1">c1</option>
+                    <option th:value="c2">c2</option>
+                </select>
+            </div>
+            <div class="content-searchcolumn-type">
+                <select name="posexperience" th:label="工作经验">
+                    <option></option>
+                    <option th:value="d">d</option>
+                    <option th:value="d1">d1</option>
+                    <option th:value="d2">d2</option>
+                </select>
+            </div>
+            <div class="content-searchcolumn-type">
+                <select name="poswelfare" th:label="职位福利">
+                    <option></option>
+                    <option th:value="e">e</option>
+                    <option th:value="e1">e1</option>
+                    <option th:value="e2">e2</option>
+                </select>
+            </div>
+            <div class="content-searchcolumn-type">
+                <input type="submit">
+            </div>
+        </form>
+    </div>
+    <div>
+        <a href="#" th:href="@{/jumpMapSearch}">这里跳转到地图查询</a>
+    </div>
+    <div>
+        <form th:action="@{/directSearch}" method="post">
+            <input name="direct" type="text">
+            <input type="submit" value="查询">
+        </form>
+    </div>
+    <div>
+        <a th:href="@{/socket}">点这进入在线聊天页</a>
+    </div>
 </div>
 </body>
 </html>
