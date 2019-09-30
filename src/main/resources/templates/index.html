@@ -6,61 +6,137 @@
 
     <title>Title</title>
     <style type="text/css">
-        html body{
+        html body {
             padding: 0;
             margin: 0;
+            width: 100%;
+            height: 100%;
         }
-        .container{
-            border: 1px solid red;
+
+        .background {
+            width: 99.6%;
+            height: 93%;
+            position: absolute;
+            z-index: -2;
+            background-size: 100%;
+            margin-top: 5%;
+            background: rgba(139, 23, 255, 0.5);
+            display: flex;
+            justify-content: center;
         }
-        .topcolumn{
+
+        .background img {
+            width: 100%;
+            height: 100%;
+            opacity: 50%;
+            z-index: -10;
+            object-fit: cover;
+            filter: opacity(10%);
+        }
+
+        .container {
+            border: 2px solid purple;
+        }
+
+        .topcolumn {
             border: 1px solid red;
             position: fixed;
             width: 100%;
+            background: rgba(139, 23, 255, 0.5);
         }
-        .topcolumn-lefticon{
+
+        .topcolumn-lefticon {
             border: 1px solid red;
             display: inline-block;
             margin-left: 15%;
             margin-top: 1.5%;
         }
-        .topcolumn-rightoption{
+
+        .topcolumn-rightoption {
             border: 1px solid red;
             float: right;
             margin-right: 20%;
             padding-top: 0;
         }
-        .topcolumn-rightoption ul{
+
+        .topcolumn-rightoption ul {
             padding-top: 0;
             padding-bottom: 0;
             border: 1px solid red;
             display: inline-block;
         }
-        .topcolumn-rightoption ul li{
+
+        .topcolumn-rightoption ul li {
             border: 1px solid red;
             /*float: left;*/
             display: inline-block;
         }
-        .content{
-            border: 1px solid red;
+
+        .content {
+            border: 1px solid blue;
             margin-top: 4.8%;
+            height: 600px;
         }
-        .content-searchcolumn{
+
+        .content-title {
+            font-size: 50px;
+            font-weight: bolder;
+            text-align: center;
+            margin-top: 7%;
+        }
+
+        .content-searchcolumn {
             border: 1px solid red;
             display: inline-block;
             margin-left: 43%;
+            margin-top: 7%;
         }
-        .content-searchcolumn-type{
+
+        .content-searchcolumn-type {
             border: 1px solid red;
             float: left;
+        }
+
+        .functions {
+            border: 1px solid red;
+            text-align: center;
+            padding-top: 1%;
+            padding-bottom: 0.5%;
+        }
+
+        .functions div {
+            border: 1px solid red;
+            display: inline-block;
+            width: 15%;
+            height: 100px;
+            margin-right: 4%;
+            margin-left: 4%;
+            border-radius: 5px;
+            background-color: deepskyblue;
+        }
+
+        .slider {
+            border: 1px solid red;
+            width: 100%;
+            height: 200px;
+        }
+
+        .slider-slideplace {
+            border: 1px solid red;
+            width: 80%;
+            height: 100%;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
+<div class="background">
+    <img src="img/f1.jpg">
+</div>
 <div class="container">
     <div class="topcolumn">
         <div class="topcolumn-lefticon">
-            <img src="templates/img/logo.png">
+            <img src="img/logo.png">
         </div>
         <div class="topcolumn-rightoption">
             <ul>
@@ -71,64 +147,153 @@
         </div>
     </div>
     <div class="content">
-        <form class="content-searchcolumn" action="#" th:action="@{/cbsearch}"  method="post">
-            <div class="content-searchcolumn-type">
-                <select name="postype" th:label="职位类型">
-                    <option></option>
-                    <option th:value="a">a</option>
-                    <option th:value="a1">a1</option>
-                    <option th:value="a2">a2</option>
-                </select>
-            </div>
-            <div class="content-searchcolumn-type">
-                <select name="postreatment" th:label="职位待遇">
-                    <option></option>
-                    <option th:value="b">b</option>
-                    <option th:value="b1">b1</option>
-                    <option th:value="b2">b2</option>
-                </select>
-            </div>
-            <div class="content-searchcolumn-type">
-                <select name="poslevel" th:label="学历水平">
-                    <option></option>
-                    <option th:value="c">c</option>
-                    <option th:value="c1">c1</option>
-                    <option th:value="c2">c2</option>
-                </select>
-            </div>
-            <div class="content-searchcolumn-type">
-                <select name="posexperience" th:label="工作经验">
-                    <option></option>
-                    <option th:value="d">d</option>
-                    <option th:value="d1">d1</option>
-                    <option th:value="d2">d2</option>
-                </select>
-            </div>
-            <div class="content-searchcolumn-type">
-                <select name="poswelfare" th:label="职位福利">
-                    <option></option>
-                    <option th:value="e">e</option>
-                    <option th:value="e1">e1</option>
-                    <option th:value="e2">e2</option>
-                </select>
-            </div>
-            <div class="content-searchcolumn-type">
-                <input type="submit">
-            </div>
-        </form>
+        <div class="content-title">欢迎来到职位搜索模块</div>
+        <div class="content-searchcolumn">
+            <form class="category" action="#" th:action="@{/cbsearch}" method="post">
+                <div class="content-searchcolumn-type">
+                    <select name="postype">
+                        <option th:label="职位类型"></option>
+                        <option th:value="a">a</option>
+                        <option th:value="a1">a1</option>
+                        <option th:value="a2">a2</option>
+                    </select>
+                </div>
+                <div class="content-searchcolumn-type">
+                    <select name="postreatment">
+                        <option th:label="职位待遇"></option>
+                        <option th:value="b">b</option>
+                        <option th:value="b1">b1</option>
+                        <option th:value="b2">b2</option>
+                    </select>
+                </div>
+                <div class="content-searchcolumn-type">
+                    <select name="poslevel">
+                        <option th:label="学历水平"></option>
+                        <option th:value="c">c</option>
+                        <option th:value="c1">c1</option>
+                        <option th:value="c2">c2</option>
+                    </select>
+                </div>
+                <div class="content-searchcolumn-type">
+                    <select name="posexperience">
+                        <option th:label="工作经验"></option>
+                        <option th:value="d">d</option>
+                        <option th:value="d1">d1</option>
+                        <option th:value="d2">d2</option>
+                    </select>
+                </div>
+                <div class="content-searchcolumn-type">
+                    <select name="poswelfare">
+                        <option th:label="职位福利"></option>
+                        <option th:value="e">e</option>
+                        <option th:value="e1">e1</option>
+                        <option th:value="e2">e2</option>
+                    </select>
+                </div>
+                <div class="content-searchcolumn-type">
+                    <input type="submit">
+                </div>
+            </form>
+        </div>
     </div>
-    <div>
-        <a href="#" th:href="@{/jumpMapSearch}">这里跳转到地图查询</a>
+    <div class="functions">
+        <label for="changedirectsearchid">
+            <div id="changedirectsearchid" class="changedirectsearch"><span>点我</span></div>
+        </label>
+        <label for="changecombinesearchid">
+            <div id="changecombinesearchid" class="changecombinesearch">点我</div>
+        </label>
+        <label for="changemapsearchid">
+            <div id="changemapsearchid" class="changemapsearch">点我</div>
+        </label>
+        <label for="changeadviceid">
+            <div id="changeadviceid" class="changeadvice">点我</div>
+        </label>
     </div>
-    <div>
-        <form th:action="@{/directSearch}" method="post">
-            <input name="direct" type="text">
-            <input type="submit" value="查询">
-        </form>
-    </div>
-    <div>
-        <a th:href="@{/socket}">点这进入在线聊天页</a>
+    <div class="slider">
+        <div class="slider-slideplace">
+            <div class="slider-slideshadow"></div>
+        </div>
     </div>
 </div>
 </body>
+<script src="webjars/jquery/3.4.1/jquery.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var changehtml = null;
+        $(".functions").on('click','#changedirectsearchid', function() {
+            $(".content-searchcolumn").empty();
+            changehtml = "<div class='functions-directsearch'>" +
+                "            <form action='/directSearch' th:action='[[@{/directSearch}]]' method='post'>" +
+                "                <input name='direct' type='text'>" +
+                "                <input type='submit' value='查询'>" +
+                "            </form>" +
+                "        </div>";
+            $(".content-searchcolumn").html(changehtml);
+        });
+        $(".functions").on('click','#changecombinesearchid', function() {
+            $(".content-searchcolumn").empty();
+            changehtml = "<form class=\"category\" action=\"/cbsearch\" th:action=\"@{/cbsearch}\"  method=\"post\">\n" +
+                "                <div class=\"content-searchcolumn-type\">\n" +
+                "                    <select name=\"postype\" th:label=\"职位类型\">\n" +
+                "                        <option label='职位类型'></option>\n" +
+                "                        <option>a</option>\n" +
+                "                        <option>a1</option>\n" +
+                "                        <option>a2</option>\n" +
+                "                    </select>\n" +
+                "                </div>\n" +
+                "                <div class=\"content-searchcolumn-type\">\n" +
+                "                    <select name=\"postreatment\" th:label=\"职位待遇\">\n" +
+                "                        <option label='职位待遇'></option>\n" +
+                "                        <option>b</option>\n" +
+                "                        <option>b1</option>\n" +
+                "                        <option>b2</option>\n" +
+                "                    </select>\n" +
+                "                </div>\n" +
+                "                <div class=\"content-searchcolumn-type\">\n" +
+                "                    <select name=\"poslevel\" th:label=\"学历水平\">\n" +
+                "                        <option label='学历水平'></option>\n" +
+                "                        <option>c</option>\n" +
+                "                        <option>c1</option>\n" +
+                "                        <option>c2</option>\n" +
+                "                    </select>\n" +
+                "                </div>\n" +
+                "                <div class=\"content-searchcolumn-type\">\n" +
+                "                    <select name=\"posexperience\" th:label=\"工作经验\">\n" +
+                "                        <option label='工作经验'></option>\n" +
+                "                        <option>d</option>\n" +
+                "                        <option>d1</option>\n" +
+                "                        <option>d2</option>\n" +
+                "                    </select>\n" +
+                "                </div>\n" +
+                "                <div class=\"content-searchcolumn-type\">\n" +
+                "                    <select name=\"poswelfare\" th:label=\"职位福利\">\n" +
+                "                        <option label='职位福利'></option>\n" +
+                "                        <option>e</option>\n" +
+                "                        <option>e1</option>\n" +
+                "                        <option>e2</option>\n" +
+                "                    </select>\n" +
+                "                </div>\n" +
+                "                <div class=\"content-searchcolumn-type\">\n" +
+                "                    <input type=\"submit\">\n" +
+                "                </div>\n" +
+                "            </form>";
+            $(".content-searchcolumn").append(changehtml);
+        });
+        $(".functions").on('click','#changemapsearchid', function() {
+            $(".content-searchcolumn").empty();
+            changehtml = "<div class=\"functions-mapsearch\">\n" +
+                "<a href=\"/jumpMapSearch\" th:href=\"@{/jumpMapSearch}\">这里跳转到地图查询</a>" +
+                "</div>";
+            $(".content-searchcolumn").append(changehtml);
+        });
+        $(".functions").on('click','#changeadviceid', function() {
+            $(".content-searchcolumn").empty();
+            changehtml = "<div class=\"functions-advicechat\">\n" +
+                "            <a href='/socket' th:href=\"@{/socket}\">点这进入在线聊天页</a>\n" +
+                "        </div>";
+            $(".content-searchcolumn").append(changehtml);
+        });
+    });
+</script>
 </html>
