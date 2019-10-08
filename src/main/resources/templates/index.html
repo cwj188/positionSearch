@@ -32,6 +32,7 @@
             z-index: -10;
             object-fit: cover;
             filter: opacity(10%);
+            top: 200px;
         }
 
         .container {
@@ -42,7 +43,7 @@
             border: 1px solid red;
             position: fixed;
             width: 100%;
-            background: rgba(139, 23, 255, 0.5);
+            background: rgba(0, 0, 0, 0.8);
         }
 
         .topcolumn-lefticon {
@@ -67,8 +68,8 @@
         }
 
         .topcolumn-rightoption ul li {
+            color: white;
             border: 1px solid red;
-            /*float: left;*/
             display: inline-block;
         }
 
@@ -79,6 +80,7 @@
         }
 
         .content-title {
+            border: 1px solid blue;
             font-size: 50px;
             font-weight: bolder;
             text-align: center;
@@ -88,13 +90,37 @@
         .content-searchcolumn {
             border: 1px solid red;
             display: inline-block;
-            margin-left: 43%;
+            margin-left: 35%;
             margin-top: 7%;
+            height: 10%;
         }
 
         .content-searchcolumn-type {
             border: 1px solid red;
             float: left;
+            height: 10%;
+            margin-top: 3%;
+        }
+
+        .content-searchcolumn-type-submit{
+            text-align: center;
+        }
+
+        #upcombine{
+            width: 143px;
+            height: 40px;
+            margin-top: 5%;
+            border: 0;
+            background: url("/img/btn1.jpg") no-repeat left top;
+            border-radius: 5px;
+        }
+        #upcombine:hover{
+            background: url("/img/btn1.jpg") no-repeat left -40px;
+        }
+
+        .content-searchcolumn-type select{
+            height: 10%;
+            padding: 6px;
         }
 
         .functions {
@@ -102,6 +128,7 @@
             text-align: center;
             padding-top: 1%;
             padding-bottom: 0.5%;
+            height: 10%;
         }
 
         .functions div {
@@ -126,6 +153,44 @@
             width: 80%;
             height: 100%;
             margin: 0 auto;
+        }
+        .showallposition{
+            border: 1px solid green;
+            width: 80%;
+            height: auto;
+            margin: 0 auto;
+        }
+        .showallposition::after{
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .showallposition-left{
+            float: left;
+        }
+        .showallposition-right{
+            float: left;
+        }
+        .showallposition-title{
+            text-align: center;
+            margin-bottom: 10%;
+        }
+        .showallposition-left{
+            border: 1px solid greenyellow;
+            width: 40%;
+        }
+        .showallposition-left ul{
+            border: 1px solid gray;
+            padding: 0;
+        }
+        .showallposition-right{
+            border: 1px solid blue;
+            width: 40%;
+            margin-left: 19.65%;
+        }
+        .showallposition-right ul{
+            border: 1px solid gray;
+            padding: 0;
         }
     </style>
 </head>
@@ -190,8 +255,8 @@
                         <option th:value="e2">e2</option>
                     </select>
                 </div>
-                <div class="content-searchcolumn-type">
-                    <input type="submit">
+                <div class="content-searchcolumn-type-submit">
+                    <input id="upcombine" type="submit">
                 </div>
             </form>
         </div>
@@ -215,6 +280,19 @@
             <div class="slider-slideshadow"></div>
         </div>
     </div>
+    <div class="showallposition">
+        <div class="showallposition-title">
+            <h2>职位示例详情</h2>
+        </div>
+        <div class="showallposition-left">
+            <ul id="leftshow">
+            </ul>
+        </div>
+        <div class="showallposition-right">
+            <ul id="rightshow">
+            </ul>
+        </div>
+    </div>
 </div>
 </body>
 <script src="webjars/jquery/3.4.1/jquery.js"></script>
@@ -223,10 +301,10 @@
         var changehtml = null;
         $(".functions").on('click','#changedirectsearchid', function() {
             $(".content-searchcolumn").empty();
-            changehtml = "<div class='functions-directsearch'>" +
+            changehtml = "<div class='functions-directsearch' style='width: 500px'>" +
                 "            <form action='/directSearch' th:action='[[@{/directSearch}]]' method='post'>" +
-                "                <input name='direct' type='text'>" +
-                "                <input type='submit' value='查询'>" +
+                "                <input name='direct' type='text' style='width: 300px;height: 30px'>" +
+                "                <input type='submit' value='查询' style='vertical-align: middle;border:0;border-radius:5px;width: 143px;height: 40px;background: url(\"/img/btn1.jpg\") no-repeat left top;'>" +
                 "            </form>" +
                 "        </div>";
             $(".content-searchcolumn").html(changehtml);
@@ -274,8 +352,8 @@
                 "                        <option>e2</option>\n" +
                 "                    </select>\n" +
                 "                </div>\n" +
-                "                <div class=\"content-searchcolumn-type\">\n" +
-                "                    <input type=\"submit\">\n" +
+                "                <div class=\"content-searchcolumn-type-submit\">\n" +
+                "                    <input id='upcombine' type=\"submit\">\n" +
                 "                </div>\n" +
                 "            </form>";
             $(".content-searchcolumn").append(changehtml);
@@ -293,6 +371,36 @@
                 "            <a href='/socket' th:href=\"@{/socket}\">点这进入在线聊天页</a>\n" +
                 "        </div>";
             $(".content-searchcolumn").append(changehtml);
+        });
+
+
+        $.get("/showall",function (data) {
+            var json=eval("("+data+")");
+            console.log(json);
+            var flag=2;
+            for (var i=0;i<json.length;i++){
+                if (flag%2==0){
+                    $("#leftshow").append(
+                        "<li style='list-style: none'>" +
+                        "<div style='border-radius: 10px;border: 1px solid blue;margin-bottom: 40%;background-color: rgba(114,255,252,0.5)'>" +
+                        "<h4>"+json[i].pname+"</h4>" +
+                        "<br>" +
+                        "<h5>"+json[i].pinfo+"</h5>" +
+                        "</div>" +
+                        "</li>");
+                    flag++;
+                }else {
+                    $("#rightshow").append(
+                        "<li style='list-style: none'>" +
+                        "<div style='border-radius: 10px;border: 1px solid blue;margin-top: 40%;margin-bottom: 10%;background-color: rgba(114,255,252,0.5)'>" +
+                        "<h4>"+json[i].pname+"</h4>" +
+                        "<br>" +
+                        "<h5>"+json[i].pinfo+"</h5>" +
+                        "</div>" +
+                        "</li>");
+                    flag++;
+                }
+            }
         });
     });
 </script>

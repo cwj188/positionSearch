@@ -47,4 +47,7 @@
   <select id="queryDirectly" parameterType="String" resultType="positionsearchmodule.searchmodule.model.Position">
     select * from position.position where pname = #{pName};
   </select>
+  <select id="getAllPosition" resultType="positionsearchmodule.searchmodule.model.Position">
+    select * from position.position;
+  </select>
 </mapper>
