@@ -8,7 +8,7 @@
     <base href="//webapi.amap.com/ui/1.0/ui/misc/MarkerList/examples/"/>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>手动控制选中</title>
+    <title>该地区职位展示</title>
     <link rel="stylesheet" type="text/css" href="./common.css">
     <style>
         #my-list li {
@@ -33,11 +33,11 @@
     <br>
 </span>
 <div id="outer-box">
-    <div id="container">
+    <div id="container" style="position: fixed">
     </div>
     <div id="panel">
         <div id="intro">
-            <h3>手动控制选中</h3>
+            <h3>该地区职位列表</h3>
         </div>
         <ul id="my-list"></ul>
     </div>
@@ -156,7 +156,10 @@
 
         //监听选中改变
         markerList.on('selectedChanged', function (event, info) {
-            //console.log(event, info);
+            // //console.log(event, info);
+            // if (info.selected.listElement) {
+            //     scrollListElementIntoView($(info.selected.listElement));
+            // }
         });
 
         //构建一个数据项数组，数据项本身没有格式要求，但需要支持下述的getDataId和getPosition
@@ -170,6 +173,21 @@
 
         //展示该数据
         markerList.render(data);
+
+
+        // function scrollListElementIntoView($listEle) {
+        //
+        //     if (!isElementInViewport($listEle.get(0))) {
+        //         $('#panel').scrollTop($listEle.offset().top - $listEle.parent().offset().top);
+        //     }
+        //
+        //     //闪动一下
+        //     $listEle
+        //         .one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
+        //             function(e) {
+        //                 $(this).removeClass('flash animated');
+        //             }).addClass('flash animated');
+        // }
     });
 </script>
 </body>

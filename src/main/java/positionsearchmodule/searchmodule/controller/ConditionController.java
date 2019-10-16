@@ -20,7 +20,7 @@ public class ConditionController {
         List<Position> positions=csService.queryPositionInfo(condition);
         StringBuffer showPosition=new StringBuffer();
         for (Position position:positions){
-            showPosition.append(position.toString()+"\r\n");
+            showPosition.append(position.toString()+"<br><hr><br>");
         }
         map.put("csResult",showPosition.toString());
         return "combineSearch";

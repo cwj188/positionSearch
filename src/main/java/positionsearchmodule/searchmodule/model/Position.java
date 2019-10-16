@@ -53,10 +53,6 @@ public class Position {
 
     @Override
     public String toString() {
-        return "pid=" + pid +
-                ", pname='" + pname + '\'' +
-                ", pinfo='" + pinfo + '\'' +
-                ", posid=" + posid +
-                ", mcid=" + mcid ;
+        return "职位号：" + pid+"<br><br>" +"职位名：" + pname+"<br><br>" + "职位信息：" + pinfo+"<br><br>";
     }
 }

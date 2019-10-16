@@ -5,19 +5,21 @@
     <title>Title</title>
 </head>
 <body>
-<div>
+<div style="text-align: center">
     <p>【myId】：
-    <div><input id="myId" name="myId" type="text"></div>
+    <div><input id="myId" name="myId" type="text"></div><br><hr><br>
     <p>【消息】：
-    <div><textarea id="contentText" name="contentText"></textarea></div>
+    <div><textarea id="contentText" name="contentText" style="width: 500px;height: 300px;font-size: 25px"></textarea></div><br><br><hr><br><br>
     <p>【操作】：
-    <div><a onclick="openSocket()">开启socket</a></div>
+    <div><a id="chat" style="color: aqua" onclick="openSocket()" onmouseover="chat.style.cursor='pointer';chat.style.color='red'" onmouseleave="chat.style.cursor='auto';chat.style.color='aqua'">开始聊天</a></div>
     <p>【操作】：
-    <div><a onclick="sendMessage()">发送消息</a></div>
+    <div><a id="send" style="color: aqua" onclick="sendMessage()" onmouseover="send.style.cursor='pointer';send.style.color='red'" onmouseleave="send.style.cursor='auto';send.style.color='aqua'">发送消息</a></div>
 </div>
 <script src="webjars/jquery/3.4.1/jquery.js"></script>
 <script type="text/javascript">
     var socket = null;
+    var chat=document.getElementById("chat");
+    var send=document.getElementById("send");
 
     function openSocket() {
         if (typeof (WebSocket) == "undefined") {

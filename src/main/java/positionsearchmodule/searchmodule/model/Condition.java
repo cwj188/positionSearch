@@ -60,4 +60,16 @@ public class Condition {
     public void setPoswelfare(String poswelfare) {
         this.poswelfare = poswelfare;
     }
+
+    @Override
+    public String toString() {
+        return "Condition{" +
+                "posid=" + posid +
+                ", postype='" + postype + '\'' +
+                ", postreatment='" + postreatment + '\'' +
+                ", poslevel='" + poslevel + '\'' +
+                ", posexperience='" + posexperience + '\'' +
+                ", poswelfare='" + poswelfare + '\'' +
+                '}';
+    }
 }

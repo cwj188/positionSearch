@@ -13,17 +13,29 @@
 展示职位详细信息页面
 <div>
     <div th:if="${mcidResult} ne null">
-        <p th:text="${mcidResult.getPname()}"></p>
-        <p th:text="${mcidResult.toString()}"></p>
+        <ul style="border: 2px solid red;list-style: none;width: 20%">
+            <span>职位名：</span>
+            <li style="margin-top: 10%;margin-bottom: 10%;text-align: center" th:text="${mcidResult.getPname()}"></li>
+            <span>编号：</span>
+            <li style="margin-top: 10%;margin-bottom: 10%;text-align: center" th:text="${mcidResult.getPid()}"></li>
+            <span>详细信息：</span>
+            <li style="margin-top: 10%;margin-bottom: 10%;text-align: center" th:text="${mcidResult.getPinfo()}"></li>
+        </ul>
     </div>
 </div>
 <div>
     <div th:if="${dsResult} ne null">
-        <p th:text="${dsResult.getPname()}"></p>
-        <p th:text="${dsResult.toString()}"></p>
+        <ul style="border: 2px solid red;list-style: none;width: 20%">
+            <span>职位名：</span>
+            <li style="margin-top: 10%;margin-bottom: 10%;text-align: center" th:text="${dsResult.getPname()}"></li>
+            <span>编号：</span>
+            <li style="margin-top: 10%;margin-bottom: 10%;text-align: center" th:text="${dsResult.getPid()}"></li>
+            <span>详细信息：</span>
+            <li style="margin-top: 10%;margin-bottom: 10%;text-align: center" th:text="${dsResult.getPinfo()}"></li>
+        </ul>
     </div>
 </div>
-<div class="upFileDiv">
+<div class="upFileDiv" style="padding-top: 10%">
     <label for="up" style="display:block;border: 2px solid red;width: 150px;height: 150px;">
         <span style="display:block;margin-top:50px;margin-left:10px;top: 50px;font-size: 15px;color: rgba(0,0,0,0.5);">点击此处上传简历</span>
         <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
